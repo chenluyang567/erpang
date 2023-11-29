@@ -66,9 +66,7 @@ class YY {
             await pdf.getPage(pages).then(async function (page) {
 
                 // 大小分辨率
-
-                // var scale = 1.5;
-                var scale = dpi / 64;
+                var scale = 1.5;
                 var viewport = await page.getViewport({ scale: scale });
 
                 let canvas = document.getElementById(canvasDocument)
@@ -122,54 +120,43 @@ class YY {
         // 获取其父级盒子
         let Father = document.getElementById(FatherDocument)
 
-        // 删除上次打开的缓存
-        // var childs = Father.childNodes;
-        // for (var i = childs.length - 1; i >= 0; i--) {
-        //     Father.removeChild(childs.item(i));
-        // }
-        // 解析ofd返回xml
-        if (DocFile) {
-            var doc = DocFile
-        } else {
-            var doc = await window.SWOFD.open(file)
-        }
-
 
         // 无需懒加载
-        if (LodingPage == 0 || LoadingPage == 0) {
-            // 循环渲染页面
-            this.ViewS(0, doc, Father)
+        if (!LodingPage && !LoadingPage) {
+            // 解析ofd返回xml
+            var doc = await window.SWOFD.open(file)
+
+            // 循环渲染
+            for (let index = 0; index < doc.pageCount; index++) {
+                // 文章页数共计几页  doc.pageCount
+                const page = await doc.pageAt(parseInt(index));
+
+
+                let canvas = document.createElement('canvas');
+                canvas.id = 'chenOFD' + index
+                Father.appendChild(canvas);
+
+
+
+                await page.render(canvas, { dpi: 96, rotate: 0 })
+
+
+            }
 
             return true
 
         } else {
-
-            if (Math.ceil(doc.pageCount / LodingPage) == LoadingPage) {
-
-                return new Error('到底了')
-            }
-
-            // 循环渲染页面
-            // 是否为首次渲染
-            let LL = null
-            let PP = null
-            if (LoadingPage == 1) {
-                LL = 0
-                PP = LodingPage * LoadingPage
-
-            } else {
-                LL = (LodingPage * LoadingPage) - LodingPage
-                PP = LodingPage * LoadingPage + LodingPage
-
-            }
-            console.log(LL, PP)
-
-
-
-            this.ViewS(LL, doc, Father, PP)
-
-
             // 判断是否为最后一页
+
+
+
+
+
+
+
+
+
+
 
 
             return doc
@@ -183,35 +170,6 @@ class YY {
 
 
 
-
-    }
-    // 循环加载渲染页面
-    async ViewS(index, doc, Father, LodingPage) {
-        console.log(LodingPage)
-        if (LodingPage) {
-            var top = LodingPage
-        } else {
-            var top = doc.pageCount
-        }
-
-        // 循环渲染
-        for (index; index < top; index++) {
-            // 文章页数共计几页  doc.pageCount
-
-            const page = await doc.pageAt(parseInt(index));
-
-
-            let canvas = document.createElement('canvas');
-
-            canvas.id = 'chenOFD' + index
-            Father.appendChild(canvas);
-
-
-
-            page.render(canvas, { dpi: 96, rotate: 0 })
-
-
-        }
 
     }
 
