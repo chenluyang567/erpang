@@ -1,191 +1,27 @@
 <!DOCTYPE html>
-<html>
-<!-- pdf转图片地址
-	https://blog.csdn.net/xxjiushini/article/details/109473403?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522168731659416800197038444%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=168731659416800197038444&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-3-109473403-null-null.142^v88^control_2,239^v2^insert_chatgpt&utm_term=%E5%89%8D%E7%AB%AFpdf%E8%BD%AC%E5%8C%96%E4%B8%BA%E5%9B%BE%E7%89%87&spm=1018.2226.3001.4187 -->
-
+<html lang="en">
 <head>
-	<meta charset=utf-8>
-	<meta name=viewport content="width=device-width,initial-scale=1">
-	<title></title>
-	<!-- <script src=./scripts/iconfont.js></script> -->
-
-
-
-
-	<!-- <script defer=defer src=./scripts/babel.js></script> -->
-	<!-- <script defer=defer src=./scripts/330.js></script> -->
-	<!-- <script defer=defer src=./scripts/app.js></script> -->
-
-
-
-
-
-
-
-
-
-	<!-- <script defer=defer src=./scripts/runtime.js></script>
-	<script defer=defer src=./scripts/374.js></script>
-	<script defer=defer src=./scripts/reader.js></script> -->
-	<!-- 印章显不显示 -->
-	<!-- <script src=./scripts/swasm.js></script>
-	<script src=./scripts/i18n.js></script> -->
-	　　
-	<script src="./index.js"></script>
-
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拳皇</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
 </head>
 
-
 <body>
+    <!-- 大窗口，将游戏页面展示 -->
+    <div id = 'kof'>
+        
+    </div>
+    
+    <script type="module">
+        //严格模式引入
+        import {KOF} from '/js/base.js'
 
-	<div>
-		<input type="file" id="in"> </input>
-		<button id="down">下载</button>
-	</div>
+        let kof = new KOF('kof');
 
-	<div class="ku" id="ku">
-		<canvas id="canvas" style="opacity: 1;"></canvas>
-	</div>
-
+    </script>
 </body>
-<script type=text/javascript>
-
-
-let a=new YY()
-
-
-
-
-	let upload_inp = document.getElementById('in')
-	let canvas = document.getElementById('canvas')
-	let down=document.getElementById('down')
-
-
-
-
-
-
-
-
-
-	// 上传
-upload_inp.addEventListener('change',async function () {
-
-// let fileURL = URL.createObjectURL(upload_inp.files[0]);
-                    // this.fileURLOther = fileURL;
-             
-await a.OpenPage(upload_inp.files[0],1,'canvas',96)
-// let bb= await a.OpenOfd(upload_inp.files[0],'ku',1,1)
-
-let ccl=null
-let index=1
-
-// setInterval(async () => {
-// 	index++
-// 	 ccl=	await a.OpenOfd(ccl?null:upload_inp.files[0],'ku',2,index,ccl)
-
-
-// }, 3000);
-// await a.OpenOfd(upload_inp.files[0],'ku')s
-
-
-
-
-
-
-
-
-
-
-		
-		
-
-
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-down.addEventListener('click',async function () {
-
-	downs()
-
-
-
-})
-
-
-
-
-
-	
-	
-	// 下载
-	function downs() {
-
-		const url = canvas.toDataURL();
-    console.log(url);
-    // 将canvas上的内容转成blob流
-    // canvas.toBlob((blob) => {
-    // 获取当前时间并转成字符串，用来当做文件名
-    const date = Date.now().toString();
-    // 创建一个 a 标签
-    const a = document.createElement("a");
-    // 设置 a 标签的下载文件名
-    a.download = `${date}.png`;
-    a.href = url;
-    // 设置 a 标签的跳转路径为 文件流地址
-    // a.href = URL.createObjectURL(blob);
-    // alert(blob);
-    // alert(URL.createObjectURL(blob));
-    // 手动触发 a 标签的点击事件
-    a.click();
-    a.mousedown();
-    // 移除 a 标签
-    a.remove();
-    // });
-
-		
-	}
-
-// 	down.addEventListener('click',async function () {
-
-
-
-
-		
-
-
-// })
-
-
-
-
-
-
-
-
-	
-	
-	
-	</script>
-
-<style>
-
-
-</style>
 
 </html>
