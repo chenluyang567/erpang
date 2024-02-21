@@ -17,7 +17,7 @@
         }
 
         #m3u8Input {
-            width: 80%;
+            width: 50%;
             padding: 5px;
             margin-bottom: 10px;
         }
@@ -28,6 +28,7 @@
             color: white;
             border: none;
             cursor: pointer;
+            margin-right: 10px;
         }
 
         button:hover {
@@ -37,37 +38,87 @@
         #videoPlayer {
             margin-top: 20px;
         }
+
+        .control-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        #timeDisplay {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        select {
+            padding: 5px;
+            font-size: 14px;
+        }
     </style>
 </head>
 
 <body>
     <figcaption>二胖私人影院视频播放器 <br>
-        <p class="author">cpc @ 2023-11-27</p>
+        <p class="author">客服微信号：me1434506719</p>
+      <p>各种新电影、电视剧可联系客服观看</p>
     </figcaption>
 
-    <input type="text" id="m3u8Input" placeholder="在这里粘贴视频链接">
+  
 
-    <button onclick="playVideo()">播放</button>
+    <div style="width: 100%;display: flex;align-items: center;flex-direction: column;">
+        <div style="width: 100%;">
+            <input type="text" id="m3u8Input" placeholder="在这里粘贴视频链接">
 
-    <div style="width: 100%;display: flex;justify-content: center;">
+            <button onclick="playVideo()">播放</button>
+        </div>
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
             <source src="" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
+
+        <div class="control-bar">
+            <span id="timeDisplay">00:00 / 00:00</span>
+            <select onchange="changePlaybackRate(this)">
+                <option value="1">正常速度</option>
+                <option value="0.5">0.5倍速</option>
+                <option value="1.5">1.5倍速</option>
+                <option value="2">2倍速</option>
+            </select>
+        </div>
     </div>
 
     <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
     <script>
+        var videoPlayer = videojs('videoPlayer');
+
         function playVideo() {
             var m3u8Url = document.getElementById('m3u8Input').value;
-               // 使用 atob() 函数解码 base64 字符串
-               var decodedString = atob(m3u8Url);
-            var videoPlayer = videojs('videoPlayer');
+     // 使用 atob() 函数解码 base64 字符串
+     var decodedString = atob(m3u8Url);
             videoPlayer.src({
                 src: decodedString,
                 type: 'application/x-mpegURL'
             });
+
+            videoPlayer.on('timeupdate', function() {
+                var currentTime = videoPlayer.currentTime();
+                var duration = videoPlayer.duration();
+                document.getElementById('timeDisplay').innerText = formatTime(currentTime) + ' / ' + formatTime(duration);
+            });
+
             videoPlayer.play();
+        }
+
+        function changePlaybackRate(select) {
+            var playbackRate = parseFloat(select.value);
+            videoPlayer.playbackRate(playbackRate);
+        }
+
+        function formatTime(time) {
+            var minutes = Math.floor(time / 60);
+            var seconds = Math.floor(time % 60);
+            return (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
         }
     </script>
 </body>
