@@ -4,15 +4,52 @@
 <head>
     <title>二胖私人影院</title>
     <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
 
+        figcaption {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #m3u8Input {
+            width: 80%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 5px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #videoPlayer {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
-    <h2>请输入视频密码：</h2>
-    <input type="text" id="m3u8Input" style="width: 80%;" placeholder="在这里粘贴视频密码">
+    <figcaption>二胖私人影院视频播放器 <br>
+        <p class="author">cpc @ 2023-11-27</p>
+    </figcaption>
+
+    <input type="text" id="m3u8Input" placeholder="在这里粘贴视频链接">
+
     <button onclick="playVideo()">播放</button>
 
-    <div>
+    <div style="width: 100%;display: flex;justify-content: center;">
         <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
             <source src="" type="application/x-mpegURL">
             Your browser does not support the video tag.
@@ -23,19 +60,13 @@
     <script>
         function playVideo() {
             var m3u8Url = document.getElementById('m3u8Input').value;
+               // 使用 atob() 函数解码 base64 字符串
+               var decodedString = atob(m3u8Url);
             var videoPlayer = videojs('videoPlayer');
-    
-
-            // 使用 atob() 函数解码 base64 字符串
-            var decodedString = atob(m3u8Url);
-
-         
-
             videoPlayer.src({
                 src: decodedString,
                 type: 'application/x-mpegURL'
             });
-
             videoPlayer.play();
         }
     </script>
