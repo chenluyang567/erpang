@@ -1,18 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>二胖小市场</title>
+    <title>二胖私人影院</title>
+    <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
 
 </head>
 
 <body>
-    <iframe style="width: 100%;height: 98vh;" src="http://axx.lxhaoka.cn/index?k=WWF6dDBMamFzbHM9" frameborder="0"></iframe>
+    <h2>请输入视频密码：</h2>
+    <input type="text" id="m3u8Input" style="width: 80%;" placeholder="在这里粘贴视频密码">
+    <button onclick="playVideo()">播放</button>
 
+    <div>
+        <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
+            <source src="" type="application/x-mpegURL">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+    <script>
+        function playVideo() {
+            var m3u8Url = document.getElementById('m3u8Input').value;
+            var videoPlayer = videojs('videoPlayer');
     
 
+            // 使用 atob() 函数解码 base64 字符串
+            var decodedString = atob(m3u8Url);
+
+         
+
+            videoPlayer.src({
+                src: decodedString,
+                type: 'application/x-mpegURL'
+            });
+
+            videoPlayer.play();
+        }
+    </script>
 </body>
 
 </html>
