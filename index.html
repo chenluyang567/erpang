@@ -1,127 +1,315 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="zh-CN">
 <head>
-    <title>二胖私人影院</title>
-    <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>批量链接打开工具</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-
-        figcaption {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        #m3u8Input {
-            width: 50%;
-            padding: 5px;
-            margin-bottom: 10px;
-        }
-
-        button {
-            padding: 5px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #videoPlayer {
-            margin-top: 20px;
-        }
-
-        .control-bar {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 10px;
         }
-
-        #timeDisplay {
-            margin-right: 10px;
-            font-size: 16px;
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
         }
-
-        select {
-            padding: 5px;
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .input-container {
+            margin-bottom: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
             font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+        
+        .process-btn {
+            background: #667eea;
+            color: white;
+        }
+        
+        .process-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .clear-btn {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .clear-btn:hover {
+            background: #ee5a5a;
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .result h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .url-list {
+            list-style: none;
+        }
+        
+        .url-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
+        
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .progress {
+            margin-top: 15px;
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #667eea;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
-
 <body>
-    <figcaption>二胖私人影院视频播放器 <br>
-        <p class="author">客服微信号：me1434506719</p>
-      <p>各种新电影、电视剧可联系客服观看</p>
-        <p style="font-size:14px">毕业论文Ai查重包过 可联系客服</p>
-    </figcaption>
-
-  
-
-    <div style="width: 100%;display: flex;align-items: center;flex-direction: column;">
-        <div style="width: 100%;">
-            <input type="text" id="m3u8Input" placeholder="在这里粘贴视频密码">
-
-            <button onclick="playVideo()">播放</button>
+    <div class="container">
+        <h1>🔗 二胖家Curl下载工具</h1>
+        <p class="description">粘贴包含curl命令的文本，自动提取并批量打开链接</p>
+        
+        <div class="input-container">
+            <textarea id="curlInput" placeholder="请粘贴curl命令，例如：
+curl -L -C - \"https://example.com/file1\" -o \"file1.jpg\"
+curl -L -C - \"https://example.com/file2\" -o \"file2.jpg\"
+curl -L -C - \"https://example.com/file3\" -o \"file3.jpg\""></textarea>
         </div>
-        <video id="videoPlayer" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
-            <source src="" type="application/x-mpegURL">
-            Your browser does not support the video tag.
-        </video>
-
-        <div class="control-bar">
-            <span id="timeDisplay">00:00 / 00:00</span>
-            <select onchange="changePlaybackRate(this)">
-                <option value="1">正常速度</option>
-                <option value="0.5">0.5倍速</option>
-                <option value="1.5">1.5倍速</option>
-                <option value="2">2倍速</option>
-            </select>
+        
+        <div class="button-group">
+            <button class="process-btn" onclick="processCurlCommands()">处理并打开链接</button>
+            <button class="clear-btn" onclick="clearInput()">清空输入</button>
+        </div>
+        
+        <div class="progress" id="progressContainer" style="display: none;">
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+        </div>
+        
+        <div id="status" class="status"></div>
+        
+        <div class="result" id="resultContainer" style="display: none;">
+            <h3>提取到的链接:</h3>
+            <ul class="url-list" id="urlList"></ul>
         </div>
     </div>
 
-    <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
     <script>
-        var videoPlayer = videojs('videoPlayer');
-
-        function playVideo() {
-            var m3u8Url = document.getElementById('m3u8Input').value;
-     // 使用 atob() 函数解码 base64 字符串
-     var decodedString = atob(m3u8Url);
-            videoPlayer.src({
-                src: decodedString,
-                type: 'application/x-mpegURL'
+        function processCurlCommands() {
+            const curlInput = document.getElementById('curlInput').value.trim();
+            const statusDiv = document.getElementById('status');
+            const resultContainer = document.getElementById('resultContainer');
+            const urlList = document.getElementById('urlList');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            
+            // 清空之前的结果
+            urlList.innerHTML = '';
+            resultContainer.style.display = 'none';
+            progressContainer.style.display = 'none';
+            
+            if (!curlInput) {
+                showStatus('请输入curl命令', 'warning');
+                return;
+            }
+            
+            // 提取URL
+            const urlRegex = /curl -L -C - "([^"]+)"/;
+            const urls = curlInput.split('\n')
+                .filter(line => line.trim().startsWith('curl'))
+                .map(line => {
+                    const match = line.match(urlRegex);
+                    return match ? match[1] : null;
+                })
+                .filter(url => url !== null);
+            
+            if (urls.length === 0) {
+                showStatus('未找到有效的URL', 'warning');
+                return;
+            }
+            
+            // 显示结果
+            showStatus(`找到 ${urls.length} 个有效链接`, 'success');
+            resultContainer.style.display = 'block';
+            
+            // 显示链接列表
+            urls.forEach((url, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${index + 1}. ${url}`;
+                urlList.appendChild(li);
             });
-
-            videoPlayer.on('timeupdate', function() {
-                var currentTime = videoPlayer.currentTime();
-                var duration = videoPlayer.duration();
-                document.getElementById('timeDisplay').innerText = formatTime(currentTime) + ' / ' + formatTime(duration);
+            
+            // 显示进度条
+            progressContainer.style.display = 'block';
+            
+            // 批量打开链接
+            let openedCount = 0;
+            
+            urls.forEach((url, index) => {
+                setTimeout(() => {
+                    try {
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        
+                        openedCount++;
+                        const progress = (openedCount / urls.length) * 100;
+                        progressBar.style.width = progress + '%';
+                        
+                        if (openedCount === urls.length) {
+                            showStatus(`已完成！已尝试打开 ${openedCount} 个链接`, 'success');
+                        }
+                        
+                    } catch (error) {
+                        console.error('打开链接失败:', error);
+                    }
+                }, index * 800); // 每隔800ms打开一个
             });
-
-            videoPlayer.play();
         }
-
-        function changePlaybackRate(select) {
-            var playbackRate = parseFloat(select.value);
-            videoPlayer.playbackRate(playbackRate);
+        
+        function clearInput() {
+            document.getElementById('curlInput').value = '';
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('status').textContent = '';
+            document.getElementById('progressContainer').style.display = 'none';
         }
-
-        function formatTime(time) {
-            var minutes = Math.floor(time / 60);
-            var seconds = Math.floor(time % 60);
-            return (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
         }
+        
+        // 示例文本（可选）
+        document.getElementById('curlInput').value = `curl -L -C - "https://d.pcs.baidu.com/file/038a894c6vdf23fb413906485f866896?fid=4246649690-250528-276481055058252&rt=pr&sign=FDtAERK-DCb740ccc5511e5e8fedcff06b081203-Y4YQpL3XSYUcmKpn4nYd%2F9dTCI0%3D&expires=8h&chkbd=0&chkv=0&dp-logid=1208260633742415668&dp-callid=0&dstime=1756782553&r=515209462&vuk=4246649690&origin_appid=15195230&file_type=0&access_token=123.25e4e67c780adbd1c4833a49d1751657.YHINeY86HPQL9xj9UpxZxnnfHty2908Ck5sbP05.RAyD4w" -o "YMM09769.jpg" -A "pan.baidu.com" -b "BDUSS=JDTjJPMjdSNDVtNG5EZUo4WnoyTEItVTRhcnBnOHpuY2c5eThLUVd4dmI5OVJuRVFBQUFBJCQAAAAAAAAAAAEAAAD1~YUa08bO-7rvtcTX7MGzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANtqrWfbaq1nV2"
+curl -L -C - "https://d.pcs.baidu.com/file/621a17b81n0cc61ba8254fc1ea6eea17?fid=4246649690-250528-238616174962305&rt=pr&sign=FDtAERK-DCb740ccc5511e5e8fedcff06b081203-j96BXd8Nm2da6iUG8WOLBc%2BinAE%3D&expires=8h&chkbd=0&chkv=0&dp-logid=1208260517205613125&dp-callid=0&dstime=1756782553&r=515209462&vuk=4246649690&origin_appid=15195230&file_type=0&access_token=123.25e4e67c780adbd1c4833a49d1751657.YHINeY86HPQL9xj9UpxZxnnfHty2908Ck5sbP05.RAyD4w" -o "YMM09811.jpg" -A "pan.baidu.com" -b "BDUSS=JDTjJPMjdSNDVtNG5EZUo4WnoyTEItVTRhcnBnOHpuY2c5eThLUVd4dmI5OVJuRVFBQUFBJCQAAAAAAAAAAAEAAAD1~YUa08bO-7rvtcTX7MGzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANtqrWfbaq1nV2"
+curl -L -C - "https://d.pcs.baidu.com/file/7741d736fv679ed0b5c41bd7133e5eaa?fid=4246649690-250528-834623974898516&rt=pr&sign=FDtAERK-DCb740ccc5511e5e8fedcff06b081203-ijXAW6PB1ZE3Iy5qryDaxCu7TTs%3D&expires=8h&chkbd=0&chkv=0&dp-logid=1208260730824087795&dp-callid=0&dstime=1756782553&r=515209462&vuk=4246649690&origin_appid=15195230&file_type=0&access_token=123.25e4e67c780adbd1c4833a49d1751657.YHINeY86HPQL9xj9UpxZxnnfHty2908Ck5sbP05.RAyD4w" -o "YMM09835.jpg" -A "pan.baidu.com" -b "BDUSS=JDTjJPMjdSNDVtNG5EZUo4WnoyTEItVTRhcnBnOHpuY2c5eThLUVd4dmI5OVJuRVFBQUFBJCQAAAAAAAAAAAEAAAD1~YUa08bO-7rvtcTX7MGzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANtqrWfbaq1nV2"`;
     </script>
 </body>
-
 </html>
